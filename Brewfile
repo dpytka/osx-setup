@@ -6,10 +6,9 @@ brew "git"
 brew "curl"
 brew "wget"
 brew "htop"
+brew "tree"
+brew "jq"
 brew "zsh"
-brew "zsh-autosuggestions"
-brew "zsh-completions"
-brew "zsh-syntax-highlighting"
 
 # apps
 
@@ -19,4 +18,3 @@ cask "zed"
 cask "iterm2"
 
 # fonts
-

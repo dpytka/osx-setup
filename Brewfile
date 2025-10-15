@@ -1,13 +1,16 @@
 # command-line utilities
 
 brew "cask"
+brew "curl"
 brew "gh"
 brew "git"
-brew "curl"
-brew "wget"
 brew "htop"
-brew "tree"
 brew "jq"
+brew "nvm"
+brew "rbenv"
+brew "tree"
+brew "uv"
+brew "wget"
 brew "zsh"
 
 # apps

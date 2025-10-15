@@ -1,6 +1,7 @@
 #!/bin/bash
 
 brew bundle install
+brew bundle cleanup --force
 
 if [ ! -d ~/.oh-my-zsh ]; then
   echo "Installing Oh My Zsh..."

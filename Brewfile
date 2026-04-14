@@ -1,5 +1,7 @@
 # command-line utilities
 
+brew "ansible"
+brew "bat"
 brew "cask"
 brew "curl"
 brew "ffmpeg"
@@ -9,6 +11,7 @@ brew "helm"
 brew "htop"
 brew "jq"
 brew "kubernetes-cli"
+brew "neovim"
 brew "nmap"
 brew "rbenv"
 brew "tree"
@@ -18,10 +21,10 @@ brew "zsh"
 
 # apps
 cask "claude-code"
-cask "whatsapp"
 cask "google-chrome"
-cask "zed"
 cask "iterm2"
+cask "whatsapp"
 cask "vlc"
+cask "zed"
 
 # fonts

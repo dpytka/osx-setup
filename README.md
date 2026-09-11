@@ -67,7 +67,7 @@ chmod +x setup.sh
 - **Zed** - Code editor
 
 ### Node Version Manager
-- **NVM** - Installed via the official install script (v0.40.3) if not already present
+- **NVM** - Installed via the official install script; updated to the latest release if already present
 
 ### Shell Configuration
 - **Oh My Zsh** - Zsh configuration framework
@@ -102,8 +102,8 @@ The [`defaults`](defaults) file applies system preferences:
 
 1. The [`setup.sh`](setup.sh:1) script first installs all packages defined in the [`Brewfile`](Brewfile:1)
 2. It then removes any packages not listed in the Brewfile
-3. Installs Oh My Zsh and Zsh plugins if not already present
-4. Installs NVM if not already present
+3. Installs Oh My Zsh and Zsh plugins if not already present; on re-runs, existing plugins are updated with `git pull`
+4. Installs NVM if not present, or updates it to the latest release
 5. Applies macOS system preferences from the [`defaults`](defaults) file
 
 ## Customization
@@ -139,7 +139,7 @@ Add additional `defaults write` commands to the [`defaults`](defaults) file. The
 
 - This script is designed for a fresh macOS installation but can be run on existing systems
 - `brew bundle cleanup --force` uninstalls anything not listed in the Brewfile, so be careful on systems with pre-existing packages
-- Oh My Zsh, its plugins, and NVM are only installed if not already present
+- Oh My Zsh is only installed if not already present (it keeps itself up to date); on re-runs the script updates custom plugins and NVM to their latest versions
 - Some installations may require user interaction or administrative privileges
 
 ## Contributing

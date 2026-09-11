@@ -81,12 +81,15 @@ chmod +x setup.sh
 
 ### macOS Defaults
 The [`defaults`](defaults) file applies system preferences:
-- Enable trackpad tap-to-click
-- Enable three-finger drag
+- Trackpad: tap-to-click (built-in and Magic Trackpad) and three-finger drag
+- Keyboard: smart quotes/dashes and auto-correction disabled, faster key repeat, full keyboard access
+- Show all file extensions
 - Disable `.DS_Store` creation on network and USB drives
-- Show the path bar in Finder
-- Hide hidden files in Finder
-- Keep folders on top (Finder and Desktop)
+- Finder: path bar, status bar, folders on top (Finder and Desktop), current-folder search, new windows in home directory, no extension-change warning, full path in window titles, hidden files stay hidden
+- Dock: auto-hidden with no delay or animation
+- Screenshots: saved to `~/Screenshots` without window shadows
+- Save and print panels expanded by default
+- Battery percentage in the menu bar
 
 ## File Structure
 

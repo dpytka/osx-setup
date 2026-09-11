@@ -1,26 +1,73 @@
-# Enable tap-to-click for the trackpad and show the correct state in System Preferences
+# Trackpad: enable tap-to-click on the built-in trackpad and the Magic Trackpad,
+# and show the correct state in System Preferences
 defaults write com.apple.AppleMultitouchTrackpad Clicking -bool true
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
 defaults -currentHost write -g com.apple.mouse.tapBehavior -int 1
 
-# Disable the .DS file creation
+# Trackpad: enable three-finger drag on the built-in trackpad and the Magic Trackpad
+defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerDrag -int 1
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerDrag -int 1
+
+# Keyboard: disable smart quotes/dashes and auto-correction
+defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
+defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
+defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
+defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
+defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
+
+# Keyboard: faster key repeat and full keyboard access (Tab between controls in dialogs)
+defaults write NSGlobalDomain KeyRepeat -int 6
+defaults write NSGlobalDomain InitialKeyRepeat -int 25
+defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
+
+# Show all file extensions
+defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+
+# Disable .DS_Store creation on network and USB volumes
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 
-# Show the path bar in the Finder
-defaults write com.apple.finder "ShowPathbar" -bool "true" && killall Finder
+# Finder: show the path bar and status bar, keep folders on top (Finder and Desktop)
+defaults write com.apple.finder ShowPathbar -bool true
+defaults write com.apple.finder ShowStatusBar -bool true
+defaults write com.apple.finder _FXSortFoldersFirst -bool true
+defaults write com.apple.finder _FXSortFoldersFirstOnDesktop -bool true
 
-# Show hidden files in the Finder
-defaults write com.apple.finder "AppleShowAllFiles" -bool "false" && killall Finder
+# Finder: search the current folder by default, open new windows in the home directory
+defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
+defaults write com.apple.finder NewWindowTarget -string "PfHm"
+defaults write com.apple.finder NewWindowTargetPath -string "file://${HOME}/"
 
-# Keep folders on top in Finder
-defaults write com.apple.finder "_FXSortFoldersFirst" -bool "true" && killall Finder
+# Finder: no extension-change warning, full POSIX path in window titles
+defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
+defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
 
-# Keep folders on top on Desktop
-defaults write com.apple.finder "_FXSortFoldersFirstOnDesktop" -bool "true" && killall Finder
+# Finder: keep hidden files hidden (macOS default, made explicit)
+defaults write com.apple.finder AppleShowAllFiles -bool false
 
-# Trackpad settings
-defaults write com.apple.AppleMultitouchTrackpad "TrackpadThreeFingerDrag" -int 1
-defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad "TrackpadThreeFingerDrag" -int 1
+# Restart Finder to apply the settings above
+killall Finder
+
+# Dock: auto-hide with no delay and no animation
+defaults write com.apple.dock autohide -bool true
+defaults write com.apple.dock autohide-delay -float 0
+defaults write com.apple.dock autohide-time-modifier -float 0
+killall Dock
+
+# Screenshots: save to ~/Screenshots and remove window shadows
+mkdir -p "${HOME}/Screenshots"
+defaults write com.apple.screencapture location -string "${HOME}/Screenshots"
+defaults write com.apple.screencapture disable-shadow -bool true
+killall SystemUIServer
+
+# Expand save and print panels by default
+defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
+defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
+defaults write NSGlobalDomain PMPrintingExpandedStateForPrint -bool true
+defaults write NSGlobalDomain PMPrintingExpandedStateForPrint2 -bool true
+
+# Show battery percentage in the menu bar (macOS Monterey and later)
+defaults write com.apple.controlcenter BatteryShowPercentage -bool true
 
 # Apply the settings
 /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u

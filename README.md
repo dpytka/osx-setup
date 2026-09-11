@@ -75,6 +75,9 @@ chmod +x setup.sh
 - **zsh-syntax-highlighting** - Syntax highlighting for zsh
 - **fast-syntax-highlighting** - Fast syntax highlighting
 - **zsh-autocomplete** - Real-time type-ahead autocomplete
+- **zsh-history-substring-search** - Search command history by substring
+- **you-should-use** - Reminds you of existing aliases for commands you type
+- **zsh-bat** - Aliases and helpers for `bat`
 
 ### macOS Defaults
 The [`defaults`](defaults) file applies system preferences:

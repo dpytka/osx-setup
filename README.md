@@ -7,8 +7,10 @@ This repository contains an automated setup script for macOS that installs essen
 The setup script automates the installation and configuration of:
 - Homebrew packages and casks
 - Oh My Zsh with useful plugins
+- NVM (Node Version Manager)
 - Command-line utilities and development tools
 - Essential applications
+- macOS system preferences (trackpad, Finder)
 
 ## Quick Start
 
@@ -24,24 +26,48 @@ chmod +x setup.sh
 ## What Gets Installed
 
 ### Command-Line Tools
+- **age** - File encryption tool
+- **ansible** - Automation and configuration management
+- **bat** - `cat` clone with syntax highlighting
 - **cask** - Homebrew Cask for installing macOS applications
 - **curl** - Data transfer tool
+- **dbmate** - Database migration tool
+- **ffmpeg** - Audio and video processing
 - **gh** - GitHub CLI
 - **git** - Version control system
+- **helm** - Kubernetes package manager
 - **htop** - Process viewer
+- **imagemagick** - Image manipulation tools
+- **iperf3** - Network performance testing
 - **jq** - JSON processor
-- **nvm** - Node Version Manager
+- **just** - Command runner
+- **kubernetes-cli** - Kubernetes command-line tool (kubectl)
+- **libpq** - PostgreSQL client libraries
+- **mkcert** - Locally-trusted development certificates
+- **neovim** - Vim-fork text editor
+- **nmap** - Network discovery and security auditing
+- **qrencode** - QR code generator
 - **rbenv** - Ruby environment manager
+- **sops** - Secrets management
 - **tree** - Directory listing utility
 - **uv** - Python package manager
 - **wget** - File retrieval utility
 - **zsh** - Z shell
 
 ### Applications
-- **WhatsApp** - Messaging application
+- **Android File Transfer** - Android device file transfer
+- **Claude Code** - AI coding agent
+- **Cyberduck** - File transfer client
+- **DBeaver Community** - Database management tool
 - **Google Chrome** - Web browser
-- **Zed** - Code editor
 - **iTerm2** - Terminal emulator
+- **LocalSend** - Local file sharing
+- **VLC** - Media player
+- **WhatsApp** - Messaging application
+- **Zed** - Code editor
+
+### Node Version Manager
+- **NVM** - Installed via the official install script (v0.40.3) if not already present
 
 ### Shell Configuration
 - **Oh My Zsh** - Zsh configuration framework
@@ -50,13 +76,22 @@ chmod +x setup.sh
 - **fast-syntax-highlighting** - Fast syntax highlighting
 - **zsh-autocomplete** - Real-time type-ahead autocomplete
 
+### macOS Defaults
+The [`defaults`](defaults) file applies system preferences:
+- Enable trackpad tap-to-click
+- Enable three-finger drag
+- Disable `.DS_Store` creation on network and USB drives
+- Show the path bar in Finder
+- Hide hidden files in Finder
+- Keep folders on top (Finder and Desktop)
+
 ## File Structure
 
 ```
 .
 ├── Brewfile          # Homebrew packages and applications to install
 ├── setup.sh          # Main setup script
-├── defaults/         # Default configuration files (if any)
+├── defaults          # macOS system preferences script (run with zsh)
 └── README.md         # This file
 ```
 
@@ -64,9 +99,9 @@ chmod +x setup.sh
 
 1. The [`setup.sh`](setup.sh:1) script first installs all packages defined in the [`Brewfile`](Brewfile:1)
 2. It then removes any packages not listed in the Brewfile
-3. Installs Oh My Zsh if not already present
-4. Clones useful Zsh plugins for enhanced functionality
-5. Applies default configurations (if any exist in the defaults directory)
+3. Installs Oh My Zsh and Zsh plugins if not already present
+4. Installs NVM if not already present
+5. Applies macOS system preferences from the [`defaults`](defaults) file
 
 ## Customization
 
@@ -82,25 +117,26 @@ cask "app-name"
 ```
 
 ### Adding New Zsh Plugins
-To add additional Zsh plugins, modify the [`setup.sh`](setup.sh:10) script:
+To add additional Zsh plugins, modify the [`setup.sh`](setup.sh:8) script:
 
 ```bash
 git clone https://github.com/user/plugin-repo.git $ZSH_CUSTOM/plugins/plugin-name
 ```
 
-### Adding Default Configurations
-Place any default configuration files in the [`defaults`](defaults) directory. These will be applied during setup.
+### Adding New macOS Preferences
+Add additional `defaults write` commands to the [`defaults`](defaults) file. These will be applied during setup.
 
 ## Requirements
 
 - macOS
-- Homebrew (will be installed if not present)
+- Homebrew (packages are installed via `brew bundle`)
 - Internet connection
 
 ## Notes
 
 - This script is designed for a fresh macOS installation but can be run on existing systems
-- Existing configurations may be overwritten
+- `brew bundle cleanup --force` uninstalls anything not listed in the Brewfile, so be careful on systems with pre-existing packages
+- Oh My Zsh, its plugins, and NVM are only installed if not already present
 - Some installations may require user interaction or administrative privileges
 
 ## Contributing

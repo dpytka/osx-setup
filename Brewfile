@@ -31,6 +31,7 @@ brew "zsh"
 # apps
 cask "android-file-transfer"
 cask "claude-code"
+cask "cyberduck"
 cask "dbeaver-community"
 cask "google-chrome"
 cask "iterm2"

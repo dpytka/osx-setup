@@ -1,0 +1,16 @@
+# command-line utilities
+
+brew "cask"
+brew "curl"
+brew "gh"
+brew "git"
+brew "htop"
+brew "jq"
+brew "pipx"
+brew "ripgrep"
+brew "tree"
+brew "uv"
+brew "wget"
+brew "zsh"
+
+cask "localsend"

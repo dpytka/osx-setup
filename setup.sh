@@ -2,8 +2,30 @@
 
 export HOMEBREW_AUTO_UPDATE_SECS=86400
 
-brew bundle install
-brew bundle cleanup --force
+# Run from the repository root so relative paths (Brewfiles, defaults) resolve
+cd "$(dirname "$0")" || exit 1
+
+# Optional profile: ./setup.sh <name> installs Brewfile.<name> on top of Brewfile.base
+PROFILE="${1:-}"
+if [ -n "$PROFILE" ] && [ ! -f "Brewfile.$PROFILE" ]; then
+  echo "Error: Brewfile.$PROFILE not found. Existing profiles:" >&2
+  ls -1 Brewfile.* | sed 's/^Brewfile\.//' >&2
+  exit 1
+fi
+
+BREW_SOURCES=(Brewfile.base)
+[ -n "$PROFILE" ] && BREW_SOURCES+=("Brewfile.$PROFILE")
+COMBINED="$(mktemp -t Brewfile)"
+cat "${BREW_SOURCES[@]}" > "$COMBINED"
+
+brew bundle install --file="$COMBINED"
+
+# Opt-in: uninstalls anything not listed in base + profile. Dangerous on machines
+# with pre-existing packages, so it only runs when BREW_CLEANUP=1 is set.
+if [ "${BREW_CLEANUP:-0}" = "1" ]; then
+  brew bundle cleanup --force --file="$COMBINED"
+fi
+rm -f "$COMBINED"
 
 ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
 
@@ -48,4 +70,9 @@ else
   fi
 fi
 
-zsh defaults
+# macOS preferences are personal - skip with SKIP_DEFAULTS=1
+if [ "${SKIP_DEFAULTS:-0}" = "1" ]; then
+  echo "Skipping macOS defaults (SKIP_DEFAULTS=1)"
+else
+  zsh defaults
+fi

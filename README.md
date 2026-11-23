@@ -5,7 +5,7 @@ This repository contains an automated setup script for macOS that installs essen
 ## Overview
 
 The setup script automates the installation and configuration of:
-- Homebrew packages and casks
+- Homebrew packages and casks (shared base plus per-person profiles)
 - Oh My Zsh with useful plugins
 - NVM (Node Version Manager)
 - Command-line utilities and development tools
@@ -20,8 +20,25 @@ To set up your macOS environment with all the configured tools and applications:
 git clone https://github.com/yourusername/.osx-setup.git
 cd .osx-setup
 chmod +x setup.sh
-./setup.sh
+./setup.sh dawid
 ```
+
+Replace `yourusername` with the GitHub account this repository lives on.
+
+## Profiles
+
+Homebrew packages are split into a shared base and personal overlays:
+
+- [`Brewfile.base`](Brewfile.base) - common tools and applications, installed for everyone
+- `Brewfile.<name>` - personal additions installed on top of the base
+
+```bash
+./setup.sh          # base only
+./setup.sh dawid    # base + dawid's additions (esphome, esptool)
+./setup.sh ewa      # base + ewa's additions
+```
+
+To add a new person, create a `Brewfile.<name>`, commit it and run `./setup.sh <name>`.
 
 ## What Gets Installed
 
@@ -33,8 +50,6 @@ chmod +x setup.sh
 - **cloudflared** - Cloudflare Tunnel client
 - **curl** - Data transfer tool
 - **dbmate** - Database migration tool
-- **esphome** - ESP32/ESP8266 firmware configuration and build tool
-- **esptool** - Serial flasher for ESP32/ESP8266 chips
 - **ffmpeg** - Audio and video processing
 - **gh** - GitHub CLI
 - **git** - Version control system
@@ -56,6 +71,8 @@ chmod +x setup.sh
 - **uv** - Python package manager
 - **wget** - File retrieval utility
 - **zsh** - Z shell
+
+The selected profile can add more packages on top (e.g. the `dawid` profile adds `esphome` and `esptool`).
 
 ### Applications
 - **Android File Transfer** - Android device file transfer
@@ -98,24 +115,27 @@ The [`defaults`](defaults) file applies system preferences:
 
 ```
 .
-├── Brewfile          # Homebrew packages and applications to install
+├── Brewfile.base     # Shared Homebrew packages and applications
+├── Brewfile.dawid    # dawid's personal additions on top of the base
+├── Brewfile.ewa      # ewa's personal additions on top of the base
 ├── setup.sh          # Main setup script
 ├── defaults          # macOS system preferences script (run with zsh)
+├── LICENSE           # MIT license
 └── README.md         # This file
 ```
 
 ## How It Works
 
-1. The [`setup.sh`](setup.sh:1) script first installs all packages defined in the [`Brewfile`](Brewfile:1)
-2. It then removes any packages not listed in the Brewfile
+1. The [`setup.sh`](setup.sh:1) script concatenates [`Brewfile.base`](Brewfile.base) with `Brewfile.<profile>` (when a profile argument is given) and installs everything via `brew bundle`
+2. It can remove packages not listed in the combined Brewfile, but only when run as `BREW_CLEANUP=1 ./setup.sh` (opt-in)
 3. Installs Oh My Zsh and Zsh plugins if not already present; on re-runs, existing plugins are updated with `git pull`
 4. Installs NVM if not present, or updates it to the latest release
-5. Applies macOS system preferences from the [`defaults`](defaults) file
+5. Applies macOS system preferences from the [`defaults`](defaults) file (skipped when `SKIP_DEFAULTS=1` is set)
 
 ## Customization
 
 ### Adding New Packages
-To install additional Homebrew packages or applications, add them to the [`Brewfile`](Brewfile:1):
+To install additional Homebrew packages or applications, add them to [`Brewfile.base`](Brewfile.base) (shared) or to a profile file like `Brewfile.dawid` (personal):
 
 ```ruby
 # For command-line tools
@@ -135,6 +155,15 @@ git clone https://github.com/user/plugin-repo.git $ZSH_CUSTOM/plugins/plugin-nam
 ### Adding New macOS Preferences
 Add additional `defaults write` commands to the [`defaults`](defaults) file. These will be applied during setup.
 
+## Adapting This Repository
+
+The repository is designed to be shared by several people with different needs:
+
+1. Add a `Brewfile.<name>` with your personal packages and commit it
+2. Keep packages everyone uses in [`Brewfile.base`](Brewfile.base) instead of duplicating them in profiles
+3. Review the [`defaults`](defaults) file - it applies the author's personal macOS preferences; run `SKIP_DEFAULTS=1 ./setup.sh <name>` if you do not want them
+4. Run `./setup.sh <name>`
+
 ## Requirements
 
 - macOS
@@ -144,7 +173,8 @@ Add additional `defaults write` commands to the [`defaults`](defaults) file. The
 ## Notes
 
 - This script is designed for a fresh macOS installation but can be run on existing systems
-- `brew bundle cleanup --force` uninstalls anything not listed in the Brewfile, so be careful on systems with pre-existing packages
+- `brew bundle cleanup --force` only runs when the script is started with `BREW_CLEANUP=1`; it uninstalls anything not listed in the combined Brewfile (base + profile)
+- The `defaults` file applies personal macOS preferences - skip it with `SKIP_DEFAULTS=1 ./setup.sh`
 - Oh My Zsh is only installed if not already present (it keeps itself up to date); on re-runs the script updates custom plugins and NVM to their latest versions
 - Some installations may require user interaction or administrative privileges
 
@@ -154,4 +184,4 @@ Feel free to submit issues and enhancement requests!
 
 ## License
 
-This repository is licensed under the MIT License.
+This repository is licensed under the MIT License - see the [`LICENSE`](LICENSE) file for details.

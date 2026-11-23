@@ -49,7 +49,7 @@ defaults write com.apple.finder AppleShowAllFiles -bool false
 killall Finder
 
 # Dock: auto-hide with no delay and no animation
-defaults write com.apple.dock autohide -bool true
+defaults write com.apple.dock autohide -bool false
 defaults write com.apple.dock autohide-delay -float 0
 defaults write com.apple.dock autohide-time-modifier -float 0
 killall Dock

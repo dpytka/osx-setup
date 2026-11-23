@@ -30,8 +30,11 @@ chmod +x setup.sh
 - **ansible** - Automation and configuration management
 - **bat** - `cat` clone with syntax highlighting
 - **cask** - Homebrew Cask for installing macOS applications
+- **cloudflared** - Cloudflare Tunnel client
 - **curl** - Data transfer tool
 - **dbmate** - Database migration tool
+- **esphome** - ESP32/ESP8266 firmware configuration and build tool
+- **esptool** - Serial flasher for ESP32/ESP8266 chips
 - **ffmpeg** - Audio and video processing
 - **gh** - GitHub CLI
 - **git** - Version control system
